@@ -1,0 +1,46 @@
+
+DATA SOURCES, MISCELLANEOUS INFO AND MAIN VARIABLES
+--------------------
+
+OWID CO2 data (Base dataset; ) - https://github.com/owid/co2-data
+
+
+OWID Energy data () - https://github.com/owid/energy-data
+
+
+Material Footprint data (2012 - 2021) - https://www.kaggle.com/datasets/iamsouravbanerjee/material-footprint-per-capita-by-country
+
+
+GINI inequality index data (1992-2025) - https://data.worldbank.org/indicator/SI.POV.GINI
+
+
+World Happiness Index data (2013 - 2023) - https://www.kaggle.com/datasets/simonaasm/world-happiness-index-by-reports-2013-2023
+
+
+ > Coverages overlap 2013 - 2021, which gives us a 8 year range to consider.
+
+--------------------
+
+CORE THEORETICAL VARIABLES OWID CO2 data:
+
+population: Useful for weighting or checking per capita calculations .
+
+gdp: Gross domestic product, your main control variable .
+
+consumption_co2_per_capita: This is key for your analysis because it relates directly to lifestyles and consumption.
+
+co2_per_capita: Production-based emissions for comparison and calculating the emissions gap.
+
+renewables_share_energy: The share of primary energy from renewable sources.
+
+energy_per_capita: Primary energy consumption per capita.
+
+IDENTIFIER COLUMNS:
+
+iso_code: The 3-letter country code. - MAIN MERGE KEY
+
+country: The full country name.
+
+year: The time key for panel data. - TEMPORAL MERGE KEY
+
+
