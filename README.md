@@ -10,13 +10,13 @@ Using this merged dataset, the project applies data cleaning, transformation, fe
 The analysis aims to demonstrate a complete and reproducible data analysis workflow, from raw heterogeneous datasets to interpretable insights and visual exploration of potential decoupling between quality of life and resource consumption.
 
 ### 2) Dataset
-- We build the *Global Wellbeing, Sustainability and Resource Use Dataset* drawing on various public data sources.
+- The *Global Wellbeing, Sustainability and Resource Use Dataset* is constructed drawing on various reliable public data sources.
 - Sources:
 - Coverage: 2013 - 2021
 - Rows/columns: Variable (depende del archivo cargado)
 - Key variables:
 
-### 3) Questions
+### 3) Research questions
 - Q1: 
 - Q2: 
 - Q3:
@@ -29,15 +29,15 @@ The analysis aims to demonstrate a complete and reproducible data analysis workf
 - Unmerged data → Merging the data correclty into a final single raw dataset.
 
 ### 5) Pipeline
-- pre-merge raw → merged raw → clean → features → viz → (export opcional a `data/processed/`)
+- pre-merge raw → merged raw → clean → features → viz → (optional export to `data/processed/`)
 
-### 6) Hallazgos
+### 6) Findings
 - Insight 1: 
 - Insight 2: 
 - Insight 3: 
 
-### 7) Estructura del proyecto
-- `src/` contiene funciones reutilizables (`io`, `cleaning`, `features`, `viz`)
+### 7) Project structure
+- `src/` has reusable functions (`io`, `cleaning`, `features`, `viz`)
 - `main.py` ejecuta el pipeline end-to-end
 
 ### 8) Execution
@@ -47,7 +47,7 @@ The analysis aims to demonstrate a complete and reproducible data analysis workf
 
 ## Project structure
 
-Estructura sugerida:
+Preliminary structure:
 
 ```
 project/
