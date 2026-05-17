@@ -186,6 +186,23 @@ def check_close_matches(
         if matches:
             print(f"{value} -> {matches}")
 
+# Define common overlapping window
+START_YEAR = 2013
+END_YEAR = 2021
+
+def filter_year_range(df, year_col="year",
+                      start_year=START_YEAR,
+                      end_year=END_YEAR):
+    """
+    Filter dataframe to a selected year range.
+    """
+
+    return df[
+        (df[year_col] >= start_year) &
+        (df[year_col] <= end_year)
+    ].copy()
+
+
 # import pandas as pd
 # def assert_columns(df: pd.DataFrame, required: list[str]) -> None:
 #     missing = [c for c in required if c not in df.columns]
