@@ -11,7 +11,7 @@ The analysis aims to demonstrate a complete and reproducible data analysis workf
 
 ### 2) Dataset
 - The *Global Wellbeing, Sustainability and Resource Use Dataset* is constructed drawing on various reliable public data sources.
-- Sources:
+- Sources: Our World in Data, The World Happiness Report, UN Human Development Reports
 - Coverage: 2013 - 2021
 - Rows/columns: Variable (depende del archivo cargado)
 - Key variables:
@@ -54,8 +54,11 @@ project/
 ├── main.py
 ├── data/
 │   ├── raw/
+│   ├── processed_raw/
 │   └── processed/
 ├── notebooks/
+│   └── data_raw_setup.ipynb
+│   └── data_cleaning.ipynb
 │   └── eda.ipynb
 ├── src/
 │   ├── __init__.py
