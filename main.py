@@ -1,9 +1,9 @@
-from src.config import RAW_PATH, OUT_PATH
-from src.io import load_csv
-from src.cleaning import clean
-from src.features import build_features
-from src.utils import assert_columns
-from src.viz import plot_graph
+from scr.config import RAW_PATH, OUT_PATH
+from scr.io import load_csv
+from scr.cleaning import clean
+from scr.features import build_features
+from scr.utils import assert_columns
+from scr.viz import plot_graph
 
 
 def main():

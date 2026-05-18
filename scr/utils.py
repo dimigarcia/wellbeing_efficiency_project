@@ -153,7 +153,7 @@ from difflib import get_close_matches
 def check_close_matches(
     only_in_1,
     only_in_2,
-    n_matches=3,
+    n_matches=10,
     cutoff=0.6
 ):
     """
@@ -203,8 +203,8 @@ def filter_year_range(df, year_col="year",
     ].copy()
 
 
-# import pandas as pd
-# def assert_columns(df: pd.DataFrame, required: list[str]) -> None:
-#     missing = [c for c in required if c not in df.columns]
-#     if missing:
-#         raise ValueError(f'Missing columns: {missing}')
+import pandas as pd
+def assert_columns(df: pd.DataFrame, required: list[str]) -> None:
+    missing = [c for c in required if c not in df.columns]
+    if missing:
+        raise ValueError(f'Missing columns: {missing}')
