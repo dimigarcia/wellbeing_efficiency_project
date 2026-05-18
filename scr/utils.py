@@ -203,6 +203,68 @@ def filter_year_range(df, year_col="year",
     ].copy()
 
 
+def countries_with_missing_vars(
+    df,
+    key_vars,
+    thresh_missing_vars
+):
+    """
+    Returns a country-level summary of missing values for countries
+    that have at least one country-year observation with more than
+    `min_missing_vars` missing variables.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Original dataframe.
+
+    key_vars : list
+        Variables to inspect.
+
+    min_missing_vars : int
+        Threshold for number of missing variables within a country-year.
+
+    Returns
+    -------
+    pd.DataFrame
+        Country-level missingness summary.
+    """
+
+    # Missing values by country
+    missing_by_country = (
+    df[key_vars]
+    .isna()
+    .groupby(df['country'])
+    .sum()
+    )
+
+    # Missing values by country-year
+    missing_by_country_year = (
+    df[key_vars]
+    .isna()
+    .groupby([df['country'], df['year']])
+    .sum()
+    )
+
+    # Keep country-years exceeding threshold
+    filtered = missing_by_country_year[
+        missing_by_country_year.sum(axis=1) > thresh_missing_vars
+    ]
+
+    # Extract affected countries
+    affected_countries = (
+        filtered.index
+        .get_level_values('country')
+        .unique()
+    )
+
+    # Subset country-level summary
+    subset = missing_by_country[
+        missing_by_country.index.isin(affected_countries)
+    ]
+
+    return subset.sort_index()
+
 import pandas as pd
 def assert_columns(df: pd.DataFrame, required: list[str]) -> None:
     missing = [c for c in required if c not in df.columns]
