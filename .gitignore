@@ -2,3 +2,4 @@ instrucciones.txt
 .venv
 README_TEMP.MD
 .DS_Store
+__pycache__
