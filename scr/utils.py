@@ -265,6 +265,20 @@ def countries_with_missing_vars(
 
     return subset.sort_index()
 
+# Add sample yearly rank
+def add_sample_yearly_rank(df, value_col="happiness_index"):
+    df = df.copy()
+
+    df["happiness_index_rank_62"] = (
+        df.groupby("year")[value_col]
+        .rank(method="min", ascending=False)
+        .astype(int)
+    )
+
+    return df
+
+
+
 import pandas as pd
 def assert_columns(df: pd.DataFrame, required: list[str]) -> None:
     missing = [c for c in required if c not in df.columns]

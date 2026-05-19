@@ -8,4 +8,4 @@ sys.path.insert(0, str(ROOT))
 
 # Data paths
 RAW_PATH = ROOT / "data" / "processed_raw" / "global_sustainability_wellbeing_resource_data_raw.csv"
-OUT_PATH = ROOT / "data" / "processed" / "clean_dataset.csv"
+OUT_PATH = ROOT / "data" / "processed" / "sustainability_wellbeing_resource_data_clean.csv"
