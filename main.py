@@ -7,6 +7,7 @@ from src.config import (
     SUPPLEMENTARY_PATH,
     MERGED_RAW_PATH,
     CLEAN_PATH,
+    CLEAN_FEATURES_PATH,
 )
 from src.io import load_csv, load_json, save_csv
 from src.setup import build_merged_raw_dataset
@@ -50,15 +51,15 @@ def main():
     save_csv(clean_df, CLEAN_PATH)
     print(f"Saved clean dataset: {CLEAN_PATH}")
     
-    # # 5. Build final analytical features
-    # final_df = build_features(clean_df)
+    # 5. Build final analytical features
+    final_df = build_features(clean_df)
 
     # # 6. Optional quick plot/check
     # plot_graph(final_df)
 
-    # # 7. Save final clean dataset
-    # save_csv(final_df, CLEAN_PATH)
-    # print(f"Saved clean dataset: {CLEAN_PATH}")
+    # 7. Save final clean dataset
+    save_csv(final_df, CLEAN_FEATURES_PATH)
+    print(f"Saved clean dataset: {CLEAN_FEATURES_PATH}")
 
 
 if __name__ == "__main__":
