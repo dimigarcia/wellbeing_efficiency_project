@@ -277,7 +277,50 @@ def add_sample_yearly_rank(df, value_col="happiness_index"):
 
     return df
 
+def check_duplicate_keys(df, keys, name="dataset"):
+    """
+    Check whether a dataframe has duplicate rows for a given key.
 
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Dataframe to check.
+    keys : list[str]
+        Columns that should uniquely identify rows.
+    name : str
+        Name used in printed output.
+
+    Returns
+    -------
+    pd.DataFrame
+        Rows with duplicated key values.
+    """
+    duplicated = df[df.duplicated(subset=keys, keep=False)].sort_values(keys)
+
+    if duplicated.empty:
+        print(f"No duplicate keys in {name} for {keys}")
+    else:
+        print(f"{len(duplicated)} rows with duplicate keys in {name} for {keys}")
+        print(duplicated)
+
+    return duplicated
+
+
+def assert_unique_keys(df, keys, name="dataset"):
+    """
+    Raise an error if a dataframe contains duplicate rows for a given key.
+
+    Use this before merges and before exporting final datasets.
+    """
+    duplicated = df[df.duplicated(subset=keys, keep=False)]
+
+    if not duplicated.empty:
+        raise ValueError(
+            f"{name} contains duplicate rows for key {keys}. "
+            f"Number of duplicated rows: {len(duplicated)}"
+        )
+
+    print(f"{name} has unique keys for {keys}")
 
 import pandas as pd
 def assert_columns(df: pd.DataFrame, required: list[str]) -> None:

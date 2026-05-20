@@ -30,7 +30,7 @@ The analysis aims to demonstrate a complete and reproducible data analysis workf
 
 - **Rows:** 558  
 - **Columns:** 29  
-- **Total Missing Values:** 324
+- **Total Missing Values:** 0
 
 | Data Type | Count |
 |---|---:|
@@ -152,9 +152,10 @@ Preliminary structure:
 project/
 ├── main.py
 ├── data/
-│   ├── raw/
-│   ├── processed_raw/
-│   └── processed/
+│   ├── raw/                        # original source files, untouched
+│   ├── processed_raw/              # harmonised/merged but not fully cleaned analytical dataset
+│   ├── processed/                  # final cleaned/exportable analytical dataset
+│   └── supplementary/              # lookup tables, country classifications, manually curated mappings
 ├── notebooks/
 │   └── data_raw_setup.ipynb
 │   └── data_cleaning.ipynb
