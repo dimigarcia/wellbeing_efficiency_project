@@ -176,7 +176,24 @@ def assert_unique_keys(df, keys, name="dataset"):
 
     print(f"{name} has unique keys for {keys}")
 
-import pandas as pd
+def add_year_relative_percentiles(
+    df,
+    cols,
+    year_col="year",
+):
+    """
+    Add year-relative percentile ranks for multiple selected columns.
+    """
+    df = df.copy()
+
+    for col in cols:
+        df[f"{col}_percentile_by_year"] = (
+            df.groupby(year_col)[col]
+            .rank(pct=True)
+        )
+
+    return df
+
 def assert_columns(df: pd.DataFrame, required: list[str]) -> None:
     missing = [c for c in required if c not in df.columns]
     if missing:
