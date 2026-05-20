@@ -1,5 +1,38 @@
+# Project-specific
 instrucciones.txt
-.venv
-README_TEMP.MD
+README_TEMP.md
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python cache/build files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Jupyter
+.ipynb_checkpoints/
+
+# macOS
 .DS_Store
-__pycache__
+
+# Environment/config secrets
+.env
+
+# VS Code
+.vscode/
+
+# PyCharm / JetBrains
+.idea/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
