@@ -1,5 +1,6 @@
 import pandas as pd
 import re
+from difflib import get_close_matches
 
 def clean_column_names(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -48,58 +49,6 @@ def clean_column_names(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
-
-####################
-
-
-def wide_to_long(
-    df: pd.DataFrame, id_vars: list, year_pattern: str, value_name: str
-) -> pd.DataFrame:
-    """Reshapes a dataframe from wide to long by identifying and renaming year
-    columns internally using a regex pattern.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        The wide dataframe.
-    id_vars : list
-        The identifier columns to keep.
-    year_pattern : str
-        Regex pattern containing a capture group () for the 4-digit year.
-    value_name : str
-        Name for the final metric column.
-    """
-    # 1. Map original column names to the extracted 4-digit year
-    rename_map = {}
-    for col in df.columns:
-        match = re.search(year_pattern, col)
-        if match:
-            # Extract the year from the first capture group
-            rename_map[col] = match.group(1)
-
-    value_vars = list(rename_map.values())
-
-    # 2. Rename columns and subset the dataframe
-    # This automatically ignores/drops any columns not in id_vars or rename_map (like unnamed_70)
-    df_renamed = df.rename(columns=rename_map)[id_vars + value_vars]
-
-    # 3. Melt the dataframe using the clean year strings
-    df_long = pd.melt(
-        df_renamed,
-        id_vars=id_vars,
-        value_vars=value_vars,
-        var_name="year",
-        value_name=value_name,
-    )
-
-    # 4. Convert year to integer
-    df_long["year"] = df_long["year"].astype(int)
-
-    return df_long
-
-
-####################
-
 def compare_values(
     df1: pd.DataFrame,
     df2: pd.DataFrame,
@@ -146,10 +95,6 @@ def compare_values(
         "only_in_df2": only_in_2,
     }
 
-
-####################
-
-from difflib import get_close_matches
 def check_close_matches(
     only_in_1,
     only_in_2,
@@ -185,97 +130,6 @@ def check_close_matches(
 
         if matches:
             print(f"{value} -> {matches}")
-
-# Define common overlapping window
-START_YEAR = 2013
-END_YEAR = 2021
-
-def filter_year_range(df, year_col="year",
-                      start_year=START_YEAR,
-                      end_year=END_YEAR):
-    """
-    Filter dataframe to a selected year range.
-    """
-
-    return df[
-        (df[year_col] >= start_year) &
-        (df[year_col] <= end_year)
-    ].copy()
-
-
-def countries_with_missing_vars(
-    df,
-    key_vars,
-    thresh_missing_vars
-):
-    """
-    Returns a country-level summary of missing values for countries
-    that have at least one country-year observation with more than
-    `min_missing_vars` missing variables.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        Original dataframe.
-
-    key_vars : list
-        Variables to inspect.
-
-    min_missing_vars : int
-        Threshold for number of missing variables within a country-year.
-
-    Returns
-    -------
-    pd.DataFrame
-        Country-level missingness summary.
-    """
-
-    # Missing values by country
-    missing_by_country = (
-    df[key_vars]
-    .isna()
-    .groupby(df['country'])
-    .sum()
-    )
-
-    # Missing values by country-year
-    missing_by_country_year = (
-    df[key_vars]
-    .isna()
-    .groupby([df['country'], df['year']])
-    .sum()
-    )
-
-    # Keep country-years exceeding threshold
-    filtered = missing_by_country_year[
-        missing_by_country_year.sum(axis=1) > thresh_missing_vars
-    ]
-
-    # Extract affected countries
-    affected_countries = (
-        filtered.index
-        .get_level_values('country')
-        .unique()
-    )
-
-    # Subset country-level summary
-    subset = missing_by_country[
-        missing_by_country.index.isin(affected_countries)
-    ]
-
-    return subset.sort_index()
-
-# Add sample yearly rank
-def add_sample_yearly_rank(df, value_col="happiness_index"):
-    df = df.copy()
-
-    df["happiness_index_rank_62"] = (
-        df.groupby("year")[value_col]
-        .rank(method="min", ascending=False)
-        .astype(int)
-    )
-
-    return df
 
 def check_duplicate_keys(df, keys, name="dataset"):
     """

@@ -1,22 +1,64 @@
-from src.config import MERGED_RAW_PATH, CLEAN_PATH
-from src.io import load_csv
+from src.config import (
+    CO2_PATH,
+    ENERGY_PATH,
+    HAPPINESS_PATH,
+    MATERIAL_FOOTPRINT_PATH,
+    GINI_PATH,
+    SUPPLEMENTARY_PATH,
+    MERGED_RAW_PATH,
+    CLEAN_PATH,
+)
+from src.io import load_csv, load_json, save_csv
+from src.setup import build_merged_raw_dataset
 from src.cleaning import clean
 from src.features import build_features
-from src.utils import assert_columns
 from src.viz import plot_graph
 
 
 def main():
-    df = load_csv(MERGED_RAW_PATH)
-    df = clean(df)
-    df = build_features(df)
-    # assert_columns(df, ['column_1', 'column_2'])
+    # 1. Load raw source datasets
+    co2_df = load_csv(CO2_PATH)
+    energy_df = load_csv(ENERGY_PATH)
+    happiness_df = load_csv(HAPPINESS_PATH)
+    material_footprint_df = load_csv(MATERIAL_FOOTPRINT_PATH)
+    gini_df = load_csv(GINI_PATH)
 
-    plot_graph(df)
+    # 2. Build merged raw dataset
+    merged_raw_df = build_merged_raw_dataset(
+        co2_df=co2_df,
+        energy_df=energy_df,
+        happiness_df=happiness_df,
+        material_footprint_df=material_footprint_df,
+        gini_df=gini_df,
+    )
 
-    CLEAN_PATH.parent.mkdir(parents=True, exist_ok=True)
-    df.to_csv(CLEAN_PATH, index=False)
-    print(f"Saved: {CLEAN_PATH}")
+    save_csv(merged_raw_df, MERGED_RAW_PATH)
+    print(f"Saved merged raw dataset: {MERGED_RAW_PATH}")
+
+    # 3. Load supplementary data for cleaning/enrichment
+    supplementary_data = load_json(SUPPLEMENTARY_PATH)
+
+    # 4. Clean merged raw dataset
+    clean_df = clean(
+        merged_raw_df,
+        supplementary_data=supplementary_data,
+    )
+
+    # Temporarily save clean dataset
+
+    # 5. Save final clean dataset
+    save_csv(clean_df, CLEAN_PATH)
+    print(f"Saved clean dataset: {CLEAN_PATH}")
+    
+    # # 5. Build final analytical features
+    # final_df = build_features(clean_df)
+
+    # # 6. Optional quick plot/check
+    # plot_graph(final_df)
+
+    # # 7. Save final clean dataset
+    # save_csv(final_df, CLEAN_PATH)
+    # print(f"Saved clean dataset: {CLEAN_PATH}")
 
 
 if __name__ == "__main__":

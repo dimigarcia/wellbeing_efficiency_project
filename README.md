@@ -128,7 +128,8 @@ The analysis aims to demonstrate a complete and reproducible data analysis workf
 
 
 ### 5) Pipeline
-- pre-merge raw → merged raw → clean → features → viz → (optional export to `data/processed/`)
+raw source datasets → build merged raw dataset (export to `data/processed_raw/`) 
+→ clean (optional export to `data/processed/`) → update clean with features (export in `data/processed/`) → viz 
 
 ### 6) Findings
 - Insight 1: 
@@ -150,26 +151,27 @@ Preliminary structure:
 
 ```
 project/
-├── main.py
+├── main.py                         # Main orchestration script for the reproducible pipeline.
 ├── data/
-│   ├── raw/                        # original source files, untouched
-│   ├── processed_raw/              # harmonised/merged but not fully cleaned analytical dataset
-│   ├── processed/                  # final cleaned/exportable analytical dataset
-│   └── supplementary/              # lookup tables, country classifications, manually curated mappings
+│   ├── raw/                        # Original source datasets kept unchanged for reproducibility.
+│   ├── processed_raw/              # Harmonised and merged intermediate analytical dataset.
+│   ├── processed/                  # Final cleaned and analysis-ready datasets.
+│   └── supplementary/              # Supplementary metadata, lookup tables, and enrichment files.
 ├── notebooks/
-│   └── data_raw_setup.ipynb
-│   └── data_cleaning.ipynb
-│   └── eda.ipynb
+│   ├── data_raw_setup.ipynb        # Documents the raw data preparation and merging process.
+│   ├── data_cleaning.ipynb         # Documents cleaning, imputation, and validation steps.
+│   └── eda.ipynb                   # Contains exploratory analysis and visualisations.
 ├── src/
-│   ├── __init__.py
-│   ├── io.py
-│   ├── cleaning.py
-│   ├── config.py
-│   ├── features.py
-│   ├── viz.py
-│   └── utils.py
-├── README.md
-├── .gitignore
-└── requirements.txt
+│   ├── __init__.py                 # Marks src as a Python package.
+│   ├── io.py                       # Standardised dataset loading and saving utilities.
+│   ├── setup.py                    # Functions for preparing and merging raw datasets.
+│   ├── cleaning.py                 # Functions for cleaning and validating the merged dataset.
+│   ├── config.py                   # Centralised project paths and configuration constants.
+│   ├── features.py                 # Feature engineering and derived analytical variables.
+│   ├── viz.py                      # Reusable plotting and visualisation functions.
+│   └── utils.py                    # General reusable validation and helper utilities.
+├── README.md                       # Project overview, methodology, and usage instructions.
+├── .gitignore                      # Files and folders excluded from version control.
+└── requirements.txt                # Python dependencies required for the project.
 
 ```
