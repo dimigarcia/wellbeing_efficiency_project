@@ -1,5 +1,23 @@
 # Exploring Sustainable Wellbeing: A Cross-Country Analysis of Resource Use, Emissions and Quality of Life
 
+## Table of contents
+
+- [1) Objective](#1-objective)
+- [2) Research questions](#2-research-questions)
+- [3) About the dataset](#3-about-the-dataset)
+- [4) Data issues & fixes](#4-data-issues--fixes)
+- [5) Pipeline](#5-pipeline)
+- [6) Findings](#6-findings)
+  - [Key insights](#key-insights)
+  - [Dataset construction findings](#dataset-construction-findings)
+  - [Conceptual and exploratory findings](#conceptual-and-exploratory-findings)
+  - [Insight-to-research-question mapping](#insight-to-research-question-mapping)
+- [7) Project structure](#7-project-structure)
+- [8) Execution](#8-execution)
+- [9) Limitations](#9-limitations)
+- [10) Further research](#10-further-research)
+- [11) Conclusion](#11-conclusion)
+
 ### 1) Objective
 
 The objective of this project is to build a coherent cross-country dataset by merging multiple public data sources related to wellbeing, inequality, economic development, energy use, emissions, and material consumption.
