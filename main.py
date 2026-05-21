@@ -45,21 +45,19 @@ def main():
         supplementary_data=supplementary_data,
     )
 
-    # Temporarily save clean dataset
-
-    # 5. Save final clean dataset
+    # 5. Save clean dataset
     save_csv(clean_df, CLEAN_PATH)
     print(f"Saved clean dataset: {CLEAN_PATH}")
     
-    # 5. Build final analytical features
+    # 6. Build final analytical features
     final_df = build_features(clean_df)
 
-    # # 6. Optional quick plot/check
+    # # 7. Optional quick plot/check
     # plot_graph(final_df)
 
-    # 7. Save final clean dataset
+    # 8. Save final clean dataset
     save_csv(final_df, CLEAN_FEATURES_PATH)
-    print(f"Saved clean dataset: {CLEAN_FEATURES_PATH}")
+    print(f"Saved clean dataset with features: {CLEAN_FEATURES_PATH}")
 
 
 if __name__ == "__main__":
