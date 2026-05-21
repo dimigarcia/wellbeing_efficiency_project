@@ -17,3 +17,4 @@ SUPPLEMENTARY_PATH = ROOT / "data" / "supplementary" / "country-territory-groups
 CLEAN_PATH = ROOT / "data" / "processed" / "sustainability_wellbeing_resource_data_clean.csv"
 CLEAN_FEATURES_PATH = ROOT / "data" / "processed" / "sustainability_wellbeing_resource_data_clean_features.csv"
 EDA_FEATURES_PATH = ROOT / "data" / "processed" / "sustainability_wellbeing_resource_data_eda.csv"
+EDA_FIGURES_DIR = ROOT / "outputs" / "eda_figures"

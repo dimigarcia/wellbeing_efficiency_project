@@ -1,3 +1,6 @@
+import matplotlib
+matplotlib.use("Agg")
+
 from src.config import (
     CO2_PATH,
     ENERGY_PATH,
@@ -9,8 +12,9 @@ from src.config import (
     CLEAN_PATH,
     CLEAN_FEATURES_PATH,
     EDA_FEATURES_PATH,
+    EDA_FIGURES_DIR,
 )
-from src.io import load_csv, load_json, save_csv
+from src.io import load_csv, load_json, save_csv, save_plot
 from src.setup import build_merged_raw_dataset
 from src.cleaning import clean
 from src.features import build_features
@@ -18,7 +22,10 @@ from src.eda_features import build_eda_features
 from src.viz import plot_main_exploratory_findings
 
 
-def main(make_plots: bool = False):
+def main(
+    save_eda_dataset: bool = True,
+    make_plots: bool = False,
+):
     # 1. Load raw source datasets
     co2_df = load_csv(CO2_PATH)
     energy_df = load_csv(ENERGY_PATH)
@@ -61,14 +68,26 @@ def main(make_plots: bool = False):
     # 8. Build EDA-specific features
     eda_df = build_eda_features(features_df)
 
-    # 9. Save EDA-ready dataset
-    save_csv(eda_df, EDA_FEATURES_PATH)
-    print(f"Saved EDA-ready dataset: {EDA_FEATURES_PATH}")
+    # 9. Optionally save EDA-ready dataset
+    if save_eda_dataset:
+        save_csv(eda_df, EDA_FEATURES_PATH)
+        print(f"Saved EDA-ready dataset: {EDA_FEATURES_PATH}")
 
     # 10. Optional final exploratory figures
     if make_plots:
-        plot_main_exploratory_findings(eda_df)
+
+        plot_main_exploratory_findings(
+            eda_df,
+            output_dir=EDA_FIGURES_DIR,
+        )
+
+        print(
+            f"Saved EDA figures to: {EDA_FIGURES_DIR}"
+        )
 
 
 if __name__ == "__main__":
-    main(make_plots=True)
+    main(
+        save_eda_dataset=True,
+        make_plots=True,
+    )

@@ -1,6 +1,7 @@
 # Project-specific
 instrucciones.txt
 README_TEMP.md
+outputs/
 
 # Virtual environments
 .venv/
