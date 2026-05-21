@@ -7,6 +7,7 @@
 - [3) About the dataset](#3-about-the-dataset)
 - [4) Data issues & fixes](#4-data-issues--fixes)
 - [5) Pipeline](#5-pipeline)
+  - [Notebooks](#notebooks)
 - [6) Findings](#6-findings)
   - [Key insights](#key-insights)
   - [Dataset construction findings](#dataset-construction-findings)
@@ -150,14 +151,14 @@ The project follows a modular and reproducible pipeline:
 
 5. **EDA-specific feature construction**  
    Year-relative percentile variables and exploratory high-wellbeing/lower-pressure flags are added separately from the core feature dataset.  
-   Implemented in `src/eda_features.py`.
+   Implemented in `src/eda_features.py` and documented in `notebooks/eda_prep.ipynb`.
 
    Optional output:
 
    `data/processed/sustainability_wellbeing_resource_data_eda.csv`
 
 6. **Exploratory visualisation and synthesis**  
-   Final figures are produced from the EDA-ready dataset using `src/viz.py`.
+   Final figures are produced from the EDA-ready dataset using `src/viz.py` and documented in `notebooks/eda.ipynb`.
 
    Optional output:
 
@@ -172,7 +173,7 @@ The project follows a modular and reproducible pipeline:
 
 ### Notebooks
 
-The project also includes three notebooks that document the analytical workflow in more detail:
+The project also includes four notebooks that document the analytical workflow in more detail:
 
 - `notebooks/data_raw_setup.ipynb`  
   Documents the raw data preparation stage, including source inspection, reshaping, harmonisation of country/year identifiers, and construction of the merged raw dataset.
@@ -180,8 +181,11 @@ The project also includes three notebooks that document the analytical workflow 
 - `notebooks/data_cleaning.ipynb`  
   Documents the cleaning logic in depth, including missingness checks, country exclusion decisions, interpolation/imputation choices, supplementary metadata enrichment, type conversion, and final validation.
 
+- `notebooks/eda_prep.ipynb`  
+  Documents the preparation of the EDA-ready dataset, including loading the cleaned feature dataset, validating analytical columns, constructing EDA-specific percentile variables and exploratory flags, and exporting `data/processed/sustainability_wellbeing_resource_data_eda.csv`.
+
 - `notebooks/eda.ipynb`  
-  Documents the exploratory analysis, including feature construction, dataset overview, environmental-pressure comparisons, wellbeing-efficiency analysis, inequality-adjusted wellbeing, percentile comparisons, within-country checks, and final synthesis.
+  Documents the substantive exploratory analysis, including dataset overview, environmental-pressure comparisons, wellbeing-efficiency analysis, inequality-adjusted wellbeing, percentile comparisons, within-country checks, and final synthesis.
 
 The notebooks provide the narrative and diagnostic reasoning behind the modular functions in `src/`, while `main.py` provides the reproducible end-to-end execution path.
 
@@ -282,7 +286,8 @@ project/
 ├── notebooks/
 │   ├── data_raw_setup.ipynb        # Documents raw data preparation and merging.
 │   ├── data_cleaning.ipynb         # Documents cleaning, imputation, validation, and typing.
-│   └── eda.ipynb                   # Documents feature construction, EDA, and final synthesis.
+│   ├── eda_prep.ipynb              # Documents EDA-ready feature preparation and export.
+│   └── eda.ipynb                   # Documents substantive EDA, visual analysis, and final synthesis.
 ├── outputs/
 │   └── eda_figures/                # Exported final figures supporting the main findings.
 ├── src/
@@ -324,6 +329,7 @@ The notebooks can be opened for the full documented workflow:
 ```bash
 jupyter notebook notebooks/data_raw_setup.ipynb
 jupyter notebook notebooks/data_cleaning.ipynb
+jupyter notebook notebooks/eda_prep.ipynb
 jupyter notebook notebooks/eda.ipynb
 ```
 
