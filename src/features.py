@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 
 from src.utils import assert_columns
+from src.utils import round_feature
 
 
 ROUND_DECIMALS = 3
@@ -52,14 +53,6 @@ def safe_divide(
         ),
         index=numerator.index,
     )
-
-
-def round_feature(series: pd.Series, decimals: int = ROUND_DECIMALS) -> pd.Series:
-    """
-    Round a feature series to a fixed number of decimal places.
-    """
-    return series.round(decimals)
-
 
 def add_emissions_trade_features(df: pd.DataFrame) -> pd.DataFrame:
     """

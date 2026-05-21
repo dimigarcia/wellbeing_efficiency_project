@@ -2,6 +2,8 @@ import pandas as pd
 import re
 from difflib import get_close_matches
 
+ROUND_DECIMALS = 3
+
 def clean_column_names(df: pd.DataFrame) -> pd.DataFrame:
     """
     Standardize dataframe column names.
@@ -176,25 +178,13 @@ def assert_unique_keys(df, keys, name="dataset"):
 
     print(f"{name} has unique keys for {keys}")
 
-def add_year_relative_percentiles(
-    df,
-    cols,
-    year_col="year",
-):
-    """
-    Add year-relative percentile ranks for multiple selected columns.
-    """
-    df = df.copy()
-
-    for col in cols:
-        df[f"{col}_percentile_by_year"] = (
-            df.groupby(year_col)[col]
-            .rank(pct=True)
-        )
-
-    return df
-
 def assert_columns(df: pd.DataFrame, required: list[str]) -> None:
     missing = [c for c in required if c not in df.columns]
     if missing:
         raise ValueError(f'Missing columns: {missing}')
+    
+def round_feature(series: pd.Series, decimals: int = ROUND_DECIMALS) -> pd.Series:
+    """
+    Round a feature series to a fixed number of decimal places.
+    """
+    return series.round(decimals)

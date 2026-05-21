@@ -15,10 +15,10 @@ from src.setup import build_merged_raw_dataset
 from src.cleaning import clean
 from src.features import build_features
 from src.eda_features import build_eda_features
-from src.viz import plot_graph
+from src.viz import plot_main_exploratory_findings
 
 
-def main():
+def main(make_plots: bool = False):
     # 1. Load raw source datasets
     co2_df = load_csv(CO2_PATH)
     energy_df = load_csv(ENERGY_PATH)
@@ -61,13 +61,14 @@ def main():
     # 8. Build EDA-specific features
     eda_df = build_eda_features(features_df)
 
-    # # 9. Optional quick plot/check
-    # plot_graph(eda_df)
-
-    # 10. Save EDA-ready dataset
+    # 9. Save EDA-ready dataset
     save_csv(eda_df, EDA_FEATURES_PATH)
     print(f"Saved EDA-ready dataset: {EDA_FEATURES_PATH}")
 
+    # 10. Optional final exploratory figures
+    if make_plots:
+        plot_main_exploratory_findings(eda_df)
+
 
 if __name__ == "__main__":
-    main()
+    main(make_plots=True)

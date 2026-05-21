@@ -1,4 +1,5 @@
 import pandas as pd
+from src.utils import round_feature
 
 KEY_VARS = [
     "happiness_index",
@@ -9,6 +10,31 @@ KEY_VARS = [
     "energy_per_capita",
     "renewables_consumption",
 ]
+
+CATEGORICAL_DTYPES = {
+    "human_development_groups": pd.CategoricalDtype(
+        categories=[
+            "Low",
+            "Medium",
+            "High",
+            "Very High",
+        ],
+        ordered=True,
+    ),
+    "income_group": pd.CategoricalDtype(
+        categories=[
+            "Low income",
+            "Lower middle income",
+            "Upper middle income",
+            "High income",
+        ],
+        ordered=True,
+    ),
+    "undp_developing_regions": "category",
+    "continent": "category",
+    "sub_continent_un": "category",
+    "hemisphere": "category",
+}
 
 
 def countries_with_missing_vars(
@@ -56,14 +82,22 @@ def resolve_energy_per_capita_columns(df: pd.DataFrame) -> pd.DataFrame:
     """
     Resolve duplicated energy_per_capita columns created during merging.
 
-    Keeps `energy_per_capita_y` as `energy_per_capita` and drops
-    `energy_per_capita_x`, matching the notebook decision.
+    The raw setup stage uses the CO2 dataset as the base dataset and merges
+    the energy dataset with suffixes=("", "_energy"). This can create both:
+
+    - energy_per_capita
+    - energy_per_capita_energy
+
+    We keep the energy dataset version, rename it to energy_per_capita,
+    and drop the base version.
     """
     df = df.copy()
 
-    if {"energy_per_capita_x", "energy_per_capita_y"}.issubset(df.columns):
-        df = df.rename(columns={"energy_per_capita_y": "energy_per_capita"})
-        df = df.drop(columns=["energy_per_capita_x"])
+    if {"energy_per_capita", "energy_per_capita_energy"}.issubset(df.columns):
+        df = df.drop(columns=["energy_per_capita"])
+        df = df.rename(
+            columns={"energy_per_capita_energy": "energy_per_capita"}
+        )
 
     return df
 
@@ -117,7 +151,9 @@ def interpolate_happiness_2014(df: pd.DataFrame) -> pd.DataFrame:
         & (df["happiness_index"].isna())
     )
 
-    df.loc[mask_2014, "happiness_index"] = interpolated[mask_2014]
+    df.loc[mask_2014, "happiness_index"] = round_feature(
+        interpolated[mask_2014]
+    )
 
     return df
 
@@ -349,6 +385,18 @@ def impute_qatar_happiness(df: pd.DataFrame) -> pd.DataFrame:
             "happiness_index",
         ] = imputed_val
 
+    df.loc[
+        (df["iso_code"] == "QAT")
+        & (df["year"].isin(qat_missing_years)),
+        "happiness_index",
+    ] = round_feature(
+        df.loc[
+            (df["iso_code"] == "QAT")
+            & (df["year"].isin(qat_missing_years)),
+            "happiness_index",
+        ]
+    )
+
     return df
 
 # Add sample yearly rank
@@ -440,9 +488,14 @@ def interpolate_gini_by_country(df: pd.DataFrame) -> pd.DataFrame:
     """
     df = df.copy()
 
-    df["gini_index"] = (
+    df["gini_index"] = round_feature(
         df.groupby("country")["gini_index"]
-        .transform(lambda x: x.interpolate(method="linear", limit_direction="both"))
+        .transform(
+            lambda x: x.interpolate(
+                method="linear",
+                limit_direction="both",
+            )
+        )
     )
 
     return df
@@ -463,6 +516,25 @@ def convert_integer_columns(
 
     return df
 
+def convert_categorical_columns(
+    df: pd.DataFrame,
+    categorical_dtypes: dict = CATEGORICAL_DTYPES,
+) -> pd.DataFrame:
+    """
+    Convert selected string/object columns to categorical dtype.
+
+    Ordered categorical dtypes are used where the categories have a
+    meaningful conceptual order, such as development or income groups.
+    Unordered categorical dtypes are used for nominal classifications,
+    such as continent, sub-region, and hemisphere.
+    """
+    df = df.copy()
+
+    for col, dtype in categorical_dtypes.items():
+        if col in df.columns:
+            df[col] = df[col].astype(dtype)
+
+    return df
 
 def reorder_clean_columns(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -581,5 +653,7 @@ def clean(
     df = reorder_clean_columns(df)
 
     df = convert_integer_columns(df)
+
+    df = convert_categorical_columns(df)
 
     return df
