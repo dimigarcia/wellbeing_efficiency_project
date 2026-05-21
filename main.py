@@ -8,11 +8,13 @@ from src.config import (
     MERGED_RAW_PATH,
     CLEAN_PATH,
     CLEAN_FEATURES_PATH,
+    EDA_FEATURES_PATH,
 )
 from src.io import load_csv, load_json, save_csv
 from src.setup import build_merged_raw_dataset
 from src.cleaning import clean
 from src.features import build_features
+from src.eda_features import build_eda_features
 from src.viz import plot_graph
 
 
@@ -48,16 +50,23 @@ def main():
     # 5. Save clean dataset
     save_csv(clean_df, CLEAN_PATH)
     print(f"Saved clean dataset: {CLEAN_PATH}")
-    
-    # 6. Build final analytical features
-    final_df = build_features(clean_df)
 
-    # # 7. Optional quick plot/check
-    # plot_graph(final_df)
+    # 6. Build core analytical features
+    features_df = build_features(clean_df)
 
-    # 8. Save final clean dataset
-    save_csv(final_df, CLEAN_FEATURES_PATH)
-    print(f"Saved clean dataset with features: {CLEAN_FEATURES_PATH}")
+    # 7. Save clean dataset with core features
+    save_csv(features_df, CLEAN_FEATURES_PATH)
+    print(f"Saved clean dataset with core features: {CLEAN_FEATURES_PATH}")
+
+    # 8. Build EDA-specific features
+    eda_df = build_eda_features(features_df)
+
+    # # 9. Optional quick plot/check
+    # plot_graph(eda_df)
+
+    # 10. Save EDA-ready dataset
+    save_csv(eda_df, EDA_FEATURES_PATH)
+    print(f"Saved EDA-ready dataset: {EDA_FEATURES_PATH}")
 
 
 if __name__ == "__main__":
