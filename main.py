@@ -89,5 +89,5 @@ def main(
 if __name__ == "__main__":
     main(
         save_eda_dataset=True,
-        make_plots=True,
+        make_plots=False,
     )
